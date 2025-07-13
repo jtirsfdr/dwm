@@ -1,60 +1,72 @@
-My patched dwm build
+# My patched dwm build
+![preview](./preview.png?raw=true)
 
-https://codeberg.org/mok0/suckless-patches
+[suckless-patches](https://codeberg.org/mok0/suckless-patches)
 
-Install
+# Install
 
-sudo make clean install
+`$ sudo make clean install`
 
-Modify
+## Modify
 
-Add patches to dwm.yaml
+Add patches to `dwm.yaml`
 
+```
 uv init
 
 uv add pyyaml
 
 uv run suckless-patches.py dwm.yaml
+```
 
 This will download and generate a quilt series file
 
+```
 quilt push
+```
 
 You will probably get a couple rejected files 
 
+```
 quilt push -f
+```
 
 To apply the patch, then manually patch the rejected
 files.
 
+```
 quilt refresh 
+```
 
 To refresh the patch after modification
 
+```
 quilt pop -a 
+```
 
 To remove all patches
 
+```
 quilt top
+```
 
 To see the currently applied patch
 
-A better tutorial is available at
-
-https://codeberg.org/mok0/suckless-patches
+A better tutorial is available at the 
+[suckless-patches](https://codeberg.org/mok0/suckless-patches) repo.
 
 Patches:
 
-xrdb (colors)
+[xrdb](https://dwm.suckless.org/patches/xrdb/) (colors)
 
-cfacts + vanitygaps
+[cfacts + vanitygaps](https://dwm.suckless.org/patches/vanitygaps/)
 
-alpha
+[alpha](https://dwm.suckless.org/patches/alpha/)
 
-custom refresh rate
+[custom refresh rate](https://dwm.suckless.org/patches/customrefreshrate/)
 
-swallow
+[swallow](https://dwm.suckless.org/patches/swallow/)
 
-attachaside
+[attachaside](https://dwm.suckless.org/patches/attachaside/)
 
 
