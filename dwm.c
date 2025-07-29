@@ -275,6 +275,7 @@ static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void xinitvisual();
 static void xrdb(const Arg *arg);
 static void zoom(const Arg *arg);
+static void resizest(const Arg *arg);
 
 static pid_t getparentprocess(pid_t p);
 static int isdescprocess(pid_t p, pid_t c);
@@ -1453,6 +1454,37 @@ resizeclient(Client *c, int x, int y, int w, int h)
 	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
 	configure(c);
 	XSync(dpy, False);
+}
+
+void
+resizest(const Arg *arg)
+{
+	int minheight = 67;
+	if (selmon->sel != NULL) { 
+		Client *c  = selmon->sel; 
+		if (c->isfloating) {
+			int h;
+			if (c->h + arg->i < minheight) {
+				h = minheight;
+			} else {
+				h = c->h + arg->i;
+			}
+			XWindowChanges wc;
+			c->oldx = c->x; wc.x = c->x;
+			c->oldy = c->y; wc.y = c->y;
+			c->oldw = c->w; wc.width = c->w;
+			c->oldh = c->h; wc.height = c->h + arg->i;
+			c->oldh = c->h; c->h = wc.height = h;
+			wc.border_width = c->bw;
+
+	
+			XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
+			configure(c);
+			XSync(dpy, False);
+		}
+	} else {
+		return;
+	}
 }
 
 void

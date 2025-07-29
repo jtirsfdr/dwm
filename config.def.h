@@ -11,7 +11,8 @@ static       int smartgaps          = 0;        /* 1 means no outer gap when the
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const int refreshrate        = 60;       /* Update rate for drag and resize events, in updates (frames) per second */
+static const int refreshrate        = 240;       /* Update rate for drag and resize events, in updates (frames) per second */
+static const int resizeheight     = 100;
 static const char *fonts[]          = { "Terminus:size=11" };
 static const char dmenufont[]       = "Terminus:size=11";
 static unsigned int baralpha        = 0xd0;
@@ -36,11 +37,13 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
-	{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
-	{ "Firefox", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
-	{ "St",      NULL,     NULL,           0,         0,          1,           0,        -1 },
-	{ NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
+	/* class      instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
+	{ "Gimp",     NULL,     NULL,           0,         1,          0,           0,        -1 },
+	{ "Firefox",  NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
+	{ "St",       NULL,     NULL,           0,         0,          1,           0,        -1 },
+	{ NULL,       NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
+	{ "floating", NULL,     NULL,           0,         1,          1,           0,        -1 },
+
 };
 
 /* layout(s) */
@@ -85,11 +88,15 @@ static const Layout layouts[] = {
 /* commands */
 static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char *floatst[]  = { "st", "-c",  "floating", "-g", "100x3+500+0", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY|ShiftMask,             XK_p,      spawn,          {.v = floatst } },
+	{ MODKEY|ShiftMask,       XK_bracketleft,  resizest,       {.i = -resizeheight} },
+	{ MODKEY|ShiftMask,       XK_bracketright, resizest,       {.i = resizeheight} },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
