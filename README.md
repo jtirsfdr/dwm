@@ -1,5 +1,5 @@
 # My patched dwm build
-![preview](./preview.png?raw=true)
+![preview](./preview.jpg?raw=true)
 
 [suckless-patches](https://codeberg.org/mok0/suckless-patches)
 
